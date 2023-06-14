@@ -17,7 +17,7 @@ import java.util.List;
 public class PagoController {
 
     @Autowired
-    private PagoService pagoService;
+    PagoService pagoService;
 
     /*@Autowired
     private ProveedorService proveedorService;
