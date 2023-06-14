@@ -4,9 +4,7 @@ import com.tingeso.proveedorservice.entities.ProveedorEntity;
 import com.tingeso.proveedorservice.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,10 +16,18 @@ public class ProveedorController {
     ProveedorService proveedorService;
 
     @GetMapping
-    public ResponseEntity<List<ProveedorEntity>> obtenerEmpleados(){
-        List<ProveedorEntity> empleados = proveedorService.obtenerProveedores();
-        if(empleados.isEmpty())
+    public ResponseEntity<List<ProveedorEntity>> listar(){
+        List<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
+        if(proveedores.isEmpty())
             return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(empleados);
+        return ResponseEntity.ok(proveedores);
+    }
+
+    @PostMapping
+    public void guardarProveedor(@RequestParam("codigo") String codigo,
+                                 @RequestParam("afecto_retencion") String afecto_retencion,
+                                 @RequestParam("categoria") String categoria,
+                                 @RequestParam("nombre_proveedor") String nombre_proveedor){
+        proveedorService.guardarProveedor(codigo, afecto_retencion, categoria, nombre_proveedor);
     }
 }
