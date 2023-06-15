@@ -152,6 +152,9 @@ public class AcopioLecheService {
 
     //promedio de kls_leche
     public double promedioKls(String proveedor, ArrayList<AcopioLecheEntity> acopios){
+        if (acopios == null){
+            return 0.0;
+        }
         double suma = sumarKls(acopios);
         double cantidad = acopioLecheRepository.countFechaByProveedor(proveedor);
         return suma/cantidad;

@@ -77,10 +77,10 @@ public class AcopioLecheController {
     }
 
     @GetMapping("/promedioKls/{proveedor}")
-    public ResponseEntity<Double> promedioKls(@PathVariable String proveedor){
+    public Double promedioKls(@PathVariable String proveedor){
         ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerPorProveedor(proveedor);
         Double kls = acopioLecheService.promedioKls(proveedor, acopios);
-        return new ResponseEntity<>(kls, HttpStatus.OK);
+        return kls;
     }
 
 }

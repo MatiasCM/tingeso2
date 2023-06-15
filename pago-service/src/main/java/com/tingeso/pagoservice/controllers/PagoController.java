@@ -41,13 +41,13 @@ public class PagoController {
     }
 
     @GetMapping("/calcular")
-    public String calcular(){
+    public ResponseEntity<List<PagoEntity>> calcular(){
         //pagoService.eliminarPagos();
         List<ProveedorModel> proveedores = pagoService.obtenerProveedores();
         for(ProveedorModel proveedor:proveedores){
             String codigo = proveedor.getCodigo();
             String categoria = proveedor.getCategoria();
-            PagoEntity pago = new PagoEntity(null, "", codigo, proveedor.getNombre_proveedor(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            PagoEntity pago = new PagoEntity(null, "", codigo, proveedor.getNombre_proveedor(), 0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             List<AcopioLecheModel> acopios = pagoService.obtenerAcopioPorProveedor(codigo);
             double kls_leche = pagoService.sumarKls(codigo);
             double klsPorCategoria = pagoService.klsPorCategoria(categoria, kls_leche);
@@ -96,7 +96,7 @@ public class PagoController {
             pago.setQuincena(quincena);
             pago.setTotal_kls(kls_leche);
             pago.setDias(pagoService.cantidadDias(codigo));
-            pago.setPromedio_kls(pagoService.promedioKls(codigo));
+            //pago.setPromedio_kls(pagoService.promedioKls(codigo));
             pago.setVariacion_leche(variacionLeche);
             pago.setGrasa(grasa);
             pago.setVariacion_grasa(variacionGrasa);
@@ -114,6 +114,7 @@ public class PagoController {
             pago.setMonto_final(pagoFinal);
             pagoService.guardarPago(pago);
         }
-        return "redirect:/pagos/listarPagos";
+        List<PagoEntity> pagos = pagoService.obtenerPagos();
+        return new ResponseEntity<>(pagos, HttpStatus.OK);
     }
 }
