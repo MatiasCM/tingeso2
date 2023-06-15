@@ -3,6 +3,7 @@ package com.tingeso.acopioLecheservice.controllers;
 import com.tingeso.acopioLecheservice.entities.AcopioLecheEntity;
 import com.tingeso.acopioLecheservice.services.AcopioLecheService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,4 +37,50 @@ public class AcopioLecheController {
         redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado con éxito");
         acopioLecheService.leerCsv(filename);
     }
+
+    @GetMapping("/{proveedor}")
+    public ResponseEntity<ArrayList<AcopioLecheEntity>> obtenerAcopiosPorProveedor(@PathVariable String proveedor) {
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerPorProveedor(proveedor);
+        return new ResponseEntity<>(acopios, HttpStatus.OK);
+    }
+
+    @GetMapping("/sumarKls/{proveedor}")
+    public ResponseEntity<Double> sumarKls(@PathVariable String proveedor){
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerPorProveedor(proveedor);
+        Double kls = acopioLecheService.sumarKls(acopios);
+        return new ResponseEntity<>(kls, HttpStatus.OK);
+    }
+
+    @GetMapping("/klsPorCategoria/{categoria}/{kls}")
+    public ResponseEntity<Double> KlsPorCategoria(@PathVariable String categoria, @PathVariable double kls){
+        //ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerPorProveedor(proveedor);
+        Double kilos = acopioLecheService.klsPorCategoria(categoria, kls);
+        return new ResponseEntity<>(kilos, HttpStatus.OK);
+    }
+
+    @GetMapping("/bonoFrecuencia/{proveedor}/{kls}")
+    public ResponseEntity<Double> bonoFrecuencia(@PathVariable String proveedor, @PathVariable double kls){
+        Double bono = acopioLecheService.bonoFrecuencia(proveedor, kls);
+        return new ResponseEntity<>(bono, HttpStatus.OK);
+    }
+
+    @GetMapping("/obtenerQuincena/{proveedor}")
+    public ResponseEntity<String> obtenerQuincena(@PathVariable String proveedor) {
+        String quincena = acopioLecheService.obtenerQuincena(proveedor);
+        return new ResponseEntity<>(quincena, HttpStatus.OK);
+    }
+
+    @GetMapping("/cantidadDias/{proveedor}")
+    public ResponseEntity<Double> cantidadDias(@PathVariable String proveedor) {
+        Double dias = acopioLecheService.cantidadDias(proveedor);
+        return new ResponseEntity<>(dias, HttpStatus.OK);
+    }
+
+    @GetMapping("/promedioKls/{proveedor}")
+    public ResponseEntity<Double> promedioKls(@PathVariable String proveedor){
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerPorProveedor(proveedor);
+        Double kls = acopioLecheService.promedioKls(proveedor, acopios);
+        return new ResponseEntity<>(kls, HttpStatus.OK);
+    }
+
 }

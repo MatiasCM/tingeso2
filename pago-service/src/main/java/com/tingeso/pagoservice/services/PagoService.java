@@ -1,17 +1,25 @@
 package com.tingeso.pagoservice.services;
 
 import com.tingeso.pagoservice.entities.PagoEntity;
+import com.tingeso.pagoservice.models.AcopioLecheModel;
+import com.tingeso.pagoservice.models.GrasaSolidoModel;
+import com.tingeso.pagoservice.models.ProveedorModel;
 import com.tingeso.pagoservice.repositories.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PagoService {
 
     @Autowired
     PagoRepository pagoRepository;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     //obtener pagos
     public ArrayList<PagoEntity> obtenerPagos(){
@@ -107,5 +115,71 @@ public class PagoService {
         return descuento;
     }
 
+    public List<ProveedorModel> obtenerProveedores(){
+        List<ProveedorModel> proveedores = restTemplate.getForObject("http://proveedor-service/proveedores/listaProveedores", List.class);
+        return proveedores;
+    }
+
+    public List<AcopioLecheModel> obtenerAcopioPorProveedor(String codigo){
+        List<AcopioLecheModel> acopios = restTemplate.getForObject("http://acopioLeche-service/acopios/" + codigo, List.class);
+        return acopios;
+    }
+
+    public Double sumarKls(String codigo){
+        Double kls = restTemplate.getForObject("http://acopioLeche-service/acopios/sumarKls/" + codigo, Double.class);
+        return kls;
+    }
+
+    public Double klsPorCategoria(String categoria, double kls){
+        //ProveedorModel proveedor = restTemplate.getForObject("http://proveedor-service/proveedores/" + codigo, ProveedorModel.class);
+        //String categoria = proveedor.getCategoria();
+        Double kilos = restTemplate.getForObject("http://acopioLeche-service/acopios/klsPorCategoria/" + categoria + kls, Double.class);
+        return kilos;
+    }
+
+    public GrasaSolidoModel obtenerGSPorProveedor(String proveedor){
+        GrasaSolidoModel grasa = restTemplate.getForObject("http://grasaSolido-service/grasas/" + proveedor, GrasaSolidoModel.class);
+        return grasa;
+    }
+
+    public Double pagoPorGrasa(double grasa, double kilos){
+        Double pago = restTemplate.getForObject("http://grasaSolido-service/grasas/pagoPorGrasa/" + grasa + kilos, Double.class);
+        return pago;
+    }
+
+    public Double obtenerGrasa(String proveedor){
+        Double grasa = restTemplate.getForObject("http://grasaSolido-service/obtenerGrasa/" + proveedor, Double.class);
+        return grasa;
+    }
+
+    public Double obtenerST(String proveedor){
+        Double st = restTemplate.getForObject("http://grasaSolido-service/obtenerST/" + proveedor, Double.class);
+        return st;
+    }
+
+    public Double pagoPorST(double st, double kilos){
+        Double pago = restTemplate.getForObject("http://grasaSolido-service/grasas/pagoPorGrasa/" + st + kilos, Double.class);
+        return pago;
+    }
+
+    public Double bonoFrecuencia(String proveedor, double kls){
+        Double bono = restTemplate.getForObject("http://acopioLeche-service/acopios/bonoFrecuencia/" + proveedor + kls, Double.class);
+        return bono;
+    }
+
+    public String obtenerQuincena(String proveedor){
+        String quincena = restTemplate.getForObject("http://acopioLeche-service/acopios/obtenerQuincena/" + proveedor, String.class);
+        return quincena;
+    }
+
+    public Double cantidadDias(String proveedor){
+        Double dias = restTemplate.getForObject("http://acopioLeche-service/acopios/cantidadDias/" + proveedor, Double.class);
+        return dias;
+    }
+
+    public Double promedioKls(String proveedor){
+        Double kls = restTemplate.getForObject("http://acopioLeche-service/acopios/promedioKls/" + proveedor, Double.class);
+        return kls;
+    }
 
 }

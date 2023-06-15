@@ -1,0 +1,1 @@
+INSERT INTO acopios(id_acopio,fecha,kls_leche,proveedor,turno) VALUES (0, "2023/03/10", 50, "13001", "M");
