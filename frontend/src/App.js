@@ -6,6 +6,8 @@ import ProveedoresComponent from './components/ProveedoresComponent';
 import NuevoProveedorComponent from './components/NuevoProveedorComponent';
 import AcopioUploadComponent from './components/AcopioUploadComponent';
 import AcopioInformationComponent from './components/AcopioInfomationComponent';
+import GrasaInformationComponent from './components/GrasaInformationComponent';
+import GrasaUploadComponent from './components/GrasaUploadComponent';
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
         <Route path="/nuevo_proveedor" element={<NuevoProveedorComponent />} />
         <Route path="/fileUpload" element={<AcopioUploadComponent />} />
         <Route path="/fileInformation" element={<AcopioInformationComponent />} />
-
+        <Route path="/fileUpload_grasa" element={<GrasaUploadComponent />} />
+        <Route path="/fileInformation_grasa" element={<GrasaInformationComponent />} />
 
       </Routes>
     </BrowserRouter>
