@@ -25,10 +25,11 @@ public class ProveedorController {
     }
 
     @PostMapping
-    public void guardarProveedor(@RequestParam("codigo") String codigo,
-                                 @RequestParam("afecto_retencion") String afecto_retencion,
-                                 @RequestParam("categoria") String categoria,
-                                 @RequestParam("nombre_proveedor") String nombre_proveedor){
+    public void guardarProveedor(@RequestBody ProveedorEntity proveedor){
+        String codigo = proveedor.getCodigo();
+        String afecto_retencion = proveedor.getAfecto_retencion();
+        String categoria = proveedor.getCategoria();
+        String nombre_proveedor = proveedor.getNombre_proveedor();
         proveedorService.guardarProveedor(codigo, afecto_retencion, categoria, nombre_proveedor);
     }
 
