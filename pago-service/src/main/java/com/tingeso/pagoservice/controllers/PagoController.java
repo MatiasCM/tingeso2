@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +41,8 @@ public class PagoController {
         return ResponseEntity.ok(pagos);
     }
 
-    @GetMapping("/calcular")
-    public ResponseEntity<List<PagoEntity>> calcular(){
+    @PostMapping("/calcular")
+    public String calcular(){
         //pagoService.eliminarPagos();
         List<ProveedorModel> proveedores = pagoService.obtenerProveedores();
         for(ProveedorModel proveedor:proveedores){
@@ -114,7 +115,8 @@ public class PagoController {
             pago.setMonto_final(pagoFinal);
             pagoService.guardarPago(pago);
         }
-        List<PagoEntity> pagos = pagoService.obtenerPagos();
-        return new ResponseEntity<>(pagos, HttpStatus.OK);
+        /*List<PagoEntity> pagos = pagoService.obtenerPagos();
+        return new ResponseEntity<>(pagos, HttpStatus.OK);*/
+        return "redirect:/listarPagos";
     }
 }
