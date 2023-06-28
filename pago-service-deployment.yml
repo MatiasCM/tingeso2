@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pago-service-deployment
+  labels:
+    app: pago-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pago-service-deployment
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: pago-service-deployment
+    spec:
+      containers:
+        - name: pago-service
+          image: matiascm/kubernetes-pago-service
+          ports:
+            - containerPort: 8086
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service:8081
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761
+            - name: eureka.instance.preferIpAddress
+              value: "true"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: pago
+                  key: host
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: pago
+                  key: name
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pago-service-service
+  labels:
+    app: pago-service-service
+spec:
+  selector:
+    app: pago-service-deployment
+  ports:
+    - protocol: TCP
+      port: 8086
+      targetPort: 8086
+  type: LoadBalancer
