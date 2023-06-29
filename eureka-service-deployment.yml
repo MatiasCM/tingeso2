@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: eureka-service
-          image: matiascm/kubernetes-eureka-service:latest
+          image: matiascm/kubernetes-eureka-service
           ports:
-            - containerPort: 8761
+            - containerPort: 8081
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
