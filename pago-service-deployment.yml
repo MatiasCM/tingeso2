@@ -18,7 +18,7 @@ spec:
         - name: pago-service
           image: matiascm/kubernetes-pago-service
           ports:
-            - containerPort: 8086
+            - containerPort: 8081
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
@@ -50,9 +50,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pago-service-service
+  name: pago-service
   labels:
-    app: pago-service-service
+    app: pago-service
 spec:
   selector:
     app: pago-service-deployment

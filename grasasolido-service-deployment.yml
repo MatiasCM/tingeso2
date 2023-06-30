@@ -18,7 +18,7 @@ spec:
         - name: grasasolido-service
           image: matiascm/kubernetes-grasasolido-service
           ports:
-            - containerPort: 8084
+            - containerPort: 8081
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
@@ -50,9 +50,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: grasasolido-service-service
+  name: grasasolido-service
   labels:
-    app: grasasolido-service-service
+    app: grasasolido-service
 spec:
   selector:
     app: grasasolido-service-deployment
