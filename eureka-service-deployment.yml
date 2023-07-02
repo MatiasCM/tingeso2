@@ -26,9 +26,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: eureka-service
+  name: eureka-service-service
   labels:
-    app: eureka-service
+    app: eureka-service-service
 spec:
   selector:
     app: eureka-service-deployment
